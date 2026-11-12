@@ -45,8 +45,8 @@ export default async function DirectoryPage() {
           </p>
           <h1>Find the right therapist for you.</h1>
           <p className="lede">
-            Browse Enso's first cohort of psychologists. Filter by what you're going through, your language and when
-            you're free, then send a request. We'll confirm the time with you.
+            Find a psychologist who fits what you're going through. Compare their approach, languages, availability
+            and fees upfront, then request an online session. We'll contact you to confirm a time.
           </p>
           <form className="search" id="searchForm" role="search">
             <Icon name="search" />
@@ -56,7 +56,7 @@ export default async function DirectoryPage() {
           </form>
           <ul className="trust">
             <li>
-              <span className="ibox"><Icon name="badge-check" /></span>
+              <span className="ibox green"><Icon name="badge-check" /></span>
               <span><strong>Verified psychologists</strong><span className="t">Masters and MPhil qualified</span></span>
             </li>
             <li>

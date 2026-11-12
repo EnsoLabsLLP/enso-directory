@@ -76,6 +76,7 @@ a{color:inherit}
 .trust strong{display:block;font-weight:600}
 .trust span.t{color:var(--muted);font-size:13px}
 .ibox{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--tint-2);flex:none}
+.ibox.green{background:var(--green-soft);color:var(--green)}
 
 /* Section heads */
 .sec-head{display:grid;gap:6px;margin-bottom:18px}

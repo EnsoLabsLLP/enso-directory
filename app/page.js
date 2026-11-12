@@ -50,8 +50,8 @@ export default async function DirectoryPage() {
           </p>
           <h1>Find the right therapist for you.</h1>
           <p className="lede">
-            Find a psychologist who fits what you're going through. Compare their approach, languages, availability
-            and fees upfront, then request an online session. We'll contact you to confirm a time.
+            The right person to talk to is closer than you think. Find a psychologist who gets what you're going
+            through, and book your first session in a few minutes.
           </p>
           <form className="search" id="searchForm" role="search">
             <Icon name="search" />

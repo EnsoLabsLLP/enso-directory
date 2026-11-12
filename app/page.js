@@ -77,6 +77,9 @@ export default async function DirectoryPage() {
             <p>Pick one or more. The list below updates as you go.</p>
           </div>
           <div className="tiles" id="tiles" />
+          <button type="button" className="tiles-more" id="tilesMore" aria-expanded="false" aria-controls="tiles" hidden>
+            Show all concerns
+          </button>
         </section>
 
         <section className="dir wrap" id="results" aria-label="Practitioners">

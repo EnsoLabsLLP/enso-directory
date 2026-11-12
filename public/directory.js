@@ -69,6 +69,20 @@
     const n = PEOPLE.filter((p) => p.concerns.includes(c.id)).length;
     return `<button type="button" class="tile" data-c="${c.id}" aria-pressed="false"><span class="ibox">${ic(c.icon)}</span><span><strong>${esc(c.label)}</strong><small>${plural(n, "practitioner")}</small></span></button>`;
   }).join("");
+
+  /* On phones only the first few concerns show until "Show all" is tapped */
+  const TILE_PREVIEW = 4;
+  const moreBtn = $("#tilesMore");
+  if (moreBtn && CONCERN_IDS.length > TILE_PREVIEW) {
+    const setMore = (open) => {
+      $("#tiles").classList.toggle("expanded", open);
+      moreBtn.setAttribute("aria-expanded", open);
+      moreBtn.innerHTML = open ? `Show fewer ${ic("chevron-down", "up")}` : `Show all ${CONCERN_IDS.length} concerns ${ic("chevron-down")}`;
+    };
+    setMore(false);
+    moreBtn.hidden = false;
+    moreBtn.addEventListener("click", () => setMore(!$("#tiles").classList.contains("expanded")));
+  }
   $("#fbody").innerHTML = `
     ${LANGS.length ? `<div class="fgroup"><h4>Language</h4><div class="fchips">${LANGS.map((l) => chip("lang", l, l)).join("")}</div></div>` : ""}
     <div class="fgroup"><h4>Time of day</h4><div class="fchips">${CAT.times.map((t) => chip("time", t.id, t.label, t.icon)).join("")}</div></div>

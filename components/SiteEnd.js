@@ -54,7 +54,7 @@ export default function SiteEnd() {
           </div>
           {phones && (
             <div className="start-art" aria-hidden="true">
-              <img src="/enso-app-phones.png" alt="" loading="lazy" />
+              <img src="/enso-app-phones.png" alt="" width="1400" height="885" loading="lazy" decoding="async" />
             </div>
           )}
         </div>

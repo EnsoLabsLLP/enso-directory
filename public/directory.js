@@ -85,7 +85,7 @@
   }
   $("#fbody").innerHTML = `
     ${LANGS.length ? `<div class="fgroup"><h4>Language</h4><div class="fchips">${LANGS.map((l) => chip("lang", l, l)).join("")}</div></div>` : ""}
-    <div class="fgroup"><h4>Time of day</h4><div class="fchips">${CAT.times.map((t) => chip("time", t.id, t.label, t.icon)).join("")}</div></div>
+    <div class="fgroup"><h4>When you're free</h4><div class="fchips">${CAT.times.map((t) => chip("time", t.id, t.label, t.icon)).join("")}</div></div>
     <div class="fgroup"><h4>Fee per session</h4><div class="fchips">${FEES.map((f) => chip("fee", f.id, f.label)).join("")}</div></div>
     <div class="fgroup"><label class="h4" for="fWay">Way of working</label><div class="select-wrap"><select id="fWay"><option value="">Any approach</option>${WAY_KEYS.map((k) => `<option value="${esc(k)}">${esc(W(k).short)}</option>`).join("")}</select></div></div>
     <label class="check"><input type="checkbox" id="fCreative"><span>Offers creative therapies <span class="m">(art, drama, play, expressive arts)</span></span></label>
@@ -102,13 +102,14 @@
   $("#q").addEventListener("input", (e) => { state.q = e.target.value.trim(); render(); });
   $("#searchForm").addEventListener("submit", (e) => { e.preventDefault(); $("#results").scrollIntoView({ behavior: reduce() ? "auto" : "smooth" }); });
   $("#tiles").addEventListener("click", (e) => {
-    const t = e.target.closest(".tile"); if (!t) return;
+    const t = e.target.closest(".tile[data-c]"); if (!t) return;
     const id = t.dataset.c; state.concerns.has(id) ? state.concerns.delete(id) : state.concerns.add(id); render();
   });
   document.addEventListener("click", (e) => {
     if (e.target.closest("[data-clear]")) clearAll();
     const rm = e.target.closest("[data-rm]"); if (rm) removeFilter(rm.dataset.rm);
     const bk = e.target.closest("[data-book]"); if (bk) book(bk.dataset.book);
+    if (e.target.closest("[data-other]")) pendingOther = true;
     const vd = e.target.closest("[data-video]");
     if (vd) {
       pending = "video";
@@ -191,7 +192,7 @@
 
   /* ---------- Side sheet ---------- */
   const drawer = $("#drawer"), scrim = $("#scrim");
-  let lastFocus = null, isOpen = false, pending = "";
+  let lastFocus = null, isOpen = false, pending = "", pendingOther = false;
 
   const radios = (name, opts) => opts.map((o, i) => `<label class="radio"><input type="radio" name="${name}" value="${esc(o.value)}"${i === 0 ? " checked" : ""}><span>${o.icon ? ic(o.icon) : ""}${esc(o.label)}</span></label>`).join("");
   const contactFields = (pre) => `
@@ -242,8 +243,10 @@
     <div id="formWrap" style="margin-top:20px">
     <form class="form" id="helpForm" novalidate>
       ${contactFields("h")}
-      <fieldset><legend class="lab">What would you like help with? <span class="opt">(pick any)</span></legend><div class="radios">${CAT.concerns.map((c) => `<label class="radio"><input type="checkbox" name="hC" value="${c.id}"><span>${ic(c.icon)}${esc(c.label)}</span></label>`).join("")}</div></fieldset>
-      ${LANGS.length ? `<fieldset><legend class="lab">Language</legend><div class="radios">${radios("hL", [{ value: "", label: "Any" }, ...LANGS.map((l) => ({ value: l, label: l }))])}</div></fieldset>` : ""}
+      <fieldset><legend class="lab">What would you like help with? <span class="opt">(pick any)</span></legend><div class="radios">${CAT.concerns.map((c) => `<label class="radio"><input type="checkbox" name="hC" value="${c.id}"><span>${ic(c.icon)}${esc(c.label)}</span></label>`).join("")}<label class="radio"><input type="checkbox" id="hOtherToggle"><span>${ic("plus")}Something else</span></label></div>
+        <div class="other-field" id="hOtherWrap" hidden><label class="sr" for="hOther">What else would you like help with?</label><input type="text" id="hOther" maxlength="120" placeholder="Tell us in a few words, for example exam stress or OCD"></div></fieldset>
+      <fieldset><legend class="lab">Language</legend><div class="radios">${radios("hL", [{ value: "", label: "Any" }, ...LANGS.map((l) => ({ value: l, label: l })), { value: "__other", label: "Other language", icon: "plus" }])}</div>
+        <div class="other-field" id="hLangWrap" hidden><label class="sr" for="hLangOther">Which language?</label><input type="text" id="hLangOther" maxlength="40" placeholder="Which language? For example Marathi or Tamil"></div></fieldset>
       <fieldset><legend class="lab">Preferred time</legend><div class="radios">${radios("hT", [{ value: "", label: "Any time" }, ...CAT.times.map((t) => ({ value: t.id, label: t.label, icon: t.icon }))])}</div></fieldset>
       <fieldset><legend class="lab">Budget per session</legend><div class="radios">${radios("hF", [{ value: "", label: "Any" }, ...FEES.map((f) => ({ value: f.id, label: f.label }))])}</div></fieldset>
       <div><label class="lab" for="hNote">Anything else we should know? <span class="opt">(optional)</span></label><textarea id="hNote" rows="3" maxlength="1500"></textarea><p class="hint">For example, a preference for a particular approach. Share only what you're comfortable with.</p></div>
@@ -294,6 +297,10 @@
     });
   }
   function wireHelp() {
+    const reveal = (wrap, show, input) => { $(wrap).hidden = !show; if (show) setTimeout(() => $(input).focus(), 30); };
+    $("#hOtherToggle").addEventListener("change", (e) => reveal("#hOtherWrap", e.target.checked, "#hOther"));
+    document.querySelectorAll('input[name="hL"]').forEach((r) => r.addEventListener("change", () => reveal("#hLangWrap", r.value === "__other" && r.checked, "#hLangOther")));
+    if (pendingOther) { pendingOther = false; $("#hOtherToggle").checked = true; reveal("#hOtherWrap", true, "#hOther"); }
     $("#helpForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const { out, problem } = readContact("h");
@@ -301,9 +308,13 @@
       $("#formErr").hidden = true;
       const cs = [...document.querySelectorAll('input[name="hC"]:checked')].map((i) => i.value);
       const val = (n) => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "";
-      const L = val("hL"), T = val("hT"), F = val("hF");
+      const T = val("hT"), F = val("hF");
+      const L = val("hL") === "__other" ? $("#hLangOther").value.trim() : val("hL");
+      const otherConcern = $("#hOtherToggle").checked ? $("#hOther").value.trim() : "";
+      if ($("#hOtherToggle").checked && !otherConcern) return showError("Tell us briefly what else you'd like help with, or untick Something else.");
+      if (val("hL") === "__other" && !L) return showError("Type the language you'd like, or pick one from the list.");
       try {
-        const res = await send({ type: "match", ...out, concerns: cs, language: L, time: T ? TIMES[T].label : "Any time", budget: F, message: $("#hNote").value }, e.submitter || $("#helpForm button[type=submit]"));
+        const res = await send({ type: "match", ...out, concerns: cs, otherConcern, language: L, time: T ? TIMES[T].label : "Any time", budget: F, message: $("#hNote").value }, e.submitter || $("#helpForm button[type=submit]"));
         const sel = { concerns: new Set(cs), lang: L, time: T, fee: F, way: "", creative: false, q: "" };
         const k = PEOPLE.filter((x) => matches(x, sel)).length;
         success(`<h4>Request sent</h4><p>Thanks, ${esc(first(out.name))}. The Enso team will contact you on ${esc(out.phone)} with a suggestion and a time.</p><p class="hint">Reference: ${esc(res.id)}</p>${k ? `<p>${plural(k, "practitioner")} ${k === 1 ? "fits" : "fit"} what you picked. <button class="textbtn" type="button" id="seeMatches">See them</button></p>` : ""}`);

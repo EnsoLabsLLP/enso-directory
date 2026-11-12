@@ -42,8 +42,10 @@ export async function POST(request) {
     }
   }
 
-  const concerns = (Array.isArray(b.concerns) ? b.concerns : [])
-    .map((id) => CONCERNS.find((c) => c.id === id)?.label)
+  const concerns = [
+    ...(Array.isArray(b.concerns) ? b.concerns : []).map((id) => CONCERNS.find((c) => c.id === id)?.label),
+    line(b.otherConcern, 120)
+  ]
     .filter(Boolean)
     .join(", ");
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Icon from "./Icon";
 import MediaField from "./MediaField";
-import { CONCERNS, WAYS, TIMES, EXPERIENCE, BADGE_PRESETS } from "@/lib/catalog";
+import { CONCERNS, WAYS, TIMES, EXPERIENCE, BADGE_PRESETS, findTime } from "@/lib/catalog";
 
 const LANGUAGE_SUGGESTIONS = ["English", "Hindi", "Marathi", "Gujarati", "Bengali", "Tamil", "Telugu", "Kannada", "Malayalam", "Punjabi", "Urdu"];
 const splitText = (s) => String(s || "").split(/[;\n]/).map((x) => x.trim()).filter(Boolean);
@@ -42,7 +42,7 @@ export default function PractitionerForm({ initial, uploads }) {
     ways: w0.picked,
     otherWays: w0.other,
     languages: (r.languages || []).join(", "),
-    avail: r.avail || [],
+    avail: (r.avail || []).map((l) => findTime(l)?.label).filter(Boolean),
     availNote: r.availNote || "",
     fee: r.fee == null ? "" : String(r.fee),
     exp: r.exp || "",

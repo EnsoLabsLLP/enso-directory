@@ -344,4 +344,10 @@
   }
   window.addEventListener("hashchange", route);
   route();
+
+  /* Navbar shadow deepens once the page scrolls under it */
+  const nav = $("#top");
+  const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 })();

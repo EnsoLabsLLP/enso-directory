@@ -25,16 +25,20 @@ export default async function DirectoryPage() {
 
   return (
     <>
-      <header className="top" id="top">
-        <div className="wrap bar">
-          <img className="logo" src="/enso-logo.png" alt="Enso Labs" width="237" height="269" />
-          <nav className="topnav" aria-label="Site">
-            <a className="btn ghost sm" href="#help-me-choose">
+      <header className="nav-wrap" id="top">
+        <nav className="glass-nav" aria-label="Site">
+          <a href="/" className="nav-logo" aria-label="Enso home">
+            <img src="/enso-logo.png" alt="Enso Labs" width="237" height="269" />
+          </a>
+          <div className="nav-links">
+            <a className="nav-link" href="#results">Therapists</a>
+            <a className="nav-link" href="#how">How it works</a>
+            <a className="nav-cta" href="#help-me-choose">
               <Icon name="sparkles" />
               Help me choose
             </a>
-          </nav>
-        </div>
+          </div>
+        </nav>
       </header>
 
       <main id="main">
@@ -114,7 +118,7 @@ export default async function DirectoryPage() {
           </div>
         </section>
 
-        <section className="how wrap" aria-labelledby="hTitle">
+        <section className="how wrap" id="how" aria-labelledby="hTitle">
           <div className="sec-head"><h2 id="hTitle">How booking works</h2></div>
           <ol className="howlist">
             <li>

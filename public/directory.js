@@ -62,7 +62,7 @@
   }
 
   const chip = (k, v, label, icon) => `<button type="button" class="fchip" data-k="${k}" data-v="${esc(v)}" aria-pressed="false">${icon ? ic(icon) : ""}${esc(label)}</button>`;
-  const HELP_CARD = `<span class="ibox">${ic("sparkles")}</span><h3>Not sure who to choose?</h3><p>Tell us a little about what's going on and we'll suggest someone who fits.</p><a class="btn inverse" href="#help-me-choose">Help me choose</a>`;
+  const HELP_CARD = `<span class="ibox">${ic("user-round-search")}</span><h3>Not sure who to choose?</h3><p>Tell us a little about what's going on and we'll suggest someone who fits.</p><a class="btn inverse" href="#help-me-choose">Help me choose</a>`;
 
   $("#helpSide").innerHTML = HELP_CARD;
   $("#tiles").innerHTML = CONCERN_IDS.map((c) => {
@@ -215,10 +215,12 @@
     ];
     const slots = [...p.avail.map((k) => ({ value: TIMES[k].label, label: TIMES[k].label, icon: TIMES[k].icon })), { value: "Any time that works", label: "Any time that works" }];
     return `<div class="d-top"><span class="eyebrow">Practitioner profile</span><button class="iconbtn" type="button" id="closeBtn" aria-label="Close">${ic("x")}</button></div>
+    <div class="pw"><aside class="pw-side">
     <div class="p-head">${avatar(p, "lg")}<div><h2 id="dTitle">${esc(p.name)}</h2><p class="role">${esc(p.role)}</p>${badges(p)}</div></div>
     <dl class="dfacts">${facts.map(([i, a, b]) => `<div><dt>${ic(i)}${a}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>
     <button class="btn block" type="button" id="toReq">${ic("calendar-check")}Book a session</button>
     ${p.video ? `<section class="sec" id="intro"><h3>${ic("play")}Meet ${esc(first(p.name))}</h3>${videoEmbed(p.video, p.name + " introduction", p.photo)}</section>` : ""}
+    </aside><div class="pw-main">
     <section class="sec"><h3>About</h3><p>${esc(p.summary)}</p>${p.about ? `<p class="about">${esc(p.about)}</p>` : ""}${!p.concerns.length && !p.ways.length ? `<p class="pending">${ic("sparkles")}<span>Full profile details are on their way.</span></p>` : ""}</section>
     ${p.concerns.length ? `<section class="sec"><h3>Can help with</h3><ul class="tags lg">${p.concerns.map((c) => `<li class="tag">${ic(C(c).icon)}${esc(C(c).label)}</li>`).join("")}</ul></section>` : ""}
     ${p.ways.length ? `<section class="sec"><h3>Ways of working</h3><ul class="ways">${p.ways.map((w) => `<li><span class="wi">${ic("check")}</span><div><strong>${esc(W(w).name)}</strong>${W(w).about ? `<p>${esc(W(w).about)}</p>` : ""}</div></li>`).join("")}</ul></section>` : ""}
@@ -234,12 +236,13 @@
         <div><button class="btn" type="submit">${ic("calendar-check")}Send request</button></div>
       </form>
       </div>
-    </section>`;
+    </section>
+    </div></div>`;
   }
 
   function helpView() {
     return `<div class="d-top"><span class="eyebrow">Matching help</span><button class="iconbtn" type="button" id="closeBtn" aria-label="Close">${ic("x")}</button></div>
-    <div class="help-head"><span class="ibox">${ic("sparkles")}</span><h2 id="dTitle">Help me choose</h2><p>Tell us a little about what you're looking for. We'll suggest a practitioner who fits and contact you to confirm a time.</p></div>
+    <div class="help-head"><span class="ibox">${ic("user-round-search")}</span><h2 id="dTitle">Help me choose</h2><p>Tell us a little about what you're looking for. We'll suggest a practitioner who fits and contact you to confirm a time.</p></div>
     <div id="formWrap" style="margin-top:20px">
     <form class="form" id="helpForm" novalidate>
       ${contactFields("h")}
@@ -251,7 +254,7 @@
       <fieldset><legend class="lab">Budget per session</legend><div class="radios">${radios("hF", [{ value: "", label: "Any" }, ...FEES.map((f) => ({ value: f.id, label: f.label }))])}</div></fieldset>
       <div><label class="lab" for="hNote">Anything else we should know? <span class="opt">(optional)</span></label><textarea id="hNote" rows="3" maxlength="1500"></textarea><p class="hint">For example, a preference for a particular approach. Share only what you're comfortable with.</p></div>
       ${consent("h")}
-      <div><button class="btn" type="submit">${ic("sparkles")}Send request</button></div>
+      <div><button class="btn" type="submit">${ic("user-round-search")}Send request</button></div>
     </form>
     </div>`;
   }
@@ -327,12 +330,14 @@
   }
   function scrollTo(sel, smooth, focusSel) {
     const el = $(sel); if (!el) return;
-    drawer.scrollTo({ top: el.offsetTop - 12, behavior: smooth && !reduce() ? "smooth" : "auto" });
+    const top = el.getBoundingClientRect().top - drawer.getBoundingClientRect().top + drawer.scrollTop - 12;
+    drawer.scrollTo({ top, behavior: smooth && !reduce() ? "smooth" : "auto" });
     if (focusSel) setTimeout(() => { const f = $(focusSel); if (f) f.focus({ preventScroll: true }); }, smooth ? 400 : 320);
   }
   function openDrawer(kind, slug) {
     if (!isOpen) lastFocus = document.activeElement;
     const p = kind === "profile" ? PEOPLE.find((x) => x.slug === slug) : null;
+    drawer.classList.toggle("wide", kind === "profile");
     drawer.innerHTML = kind === "help" ? helpView() : profileView(p);
     drawer.scrollTop = 0; isOpen = true;
     drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden", "false");

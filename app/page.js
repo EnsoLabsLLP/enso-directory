@@ -35,7 +35,7 @@ export default async function DirectoryPage() {
             <a className="nav-link" href="#results">Therapists</a>
             <a className="nav-link" href="#how">How it works</a>
             <a className="nav-cta" href="#help-me-choose">
-              <Icon name="sparkles" />
+              <Icon name="user-round-search" />
               Help me choose
             </a>
           </div>

@@ -304,6 +304,32 @@ textarea{resize:vertical;min-height:88px}
   padding-left:32px;padding-right:calc(env(safe-area-inset-right,0px) + 32px)}
 .drawer.open{transform:none;visibility:visible;transition:transform .3s ease}
 @media (max-width:600px){.drawer{border-left:0;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:calc(env(safe-area-inset-right,0px) + 18px)}}
+/* Full profile: a large, centred panel with two columns */
+.drawer.wide{top:calc(env(safe-area-inset-top,0px) + 20px);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);left:50%;right:auto;width:min(1080px,calc(100vw - 40px));
+  border:1px solid var(--line);border-radius:24px;box-shadow:0 30px 80px -20px rgba(22,31,58,.35);
+  padding:22px 36px 40px;transform:translate(-50%,18px);opacity:0;transition:transform .3s ease,opacity .25s ease,visibility 0s linear .3s}
+.drawer.wide.open{transform:translate(-50%,0);opacity:1;transition:transform .3s ease,opacity .25s ease}
+.drawer.wide .d-top{margin-bottom:8px}
+.pw{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:44px;align-items:start}
+.pw-side{display:grid;gap:0;align-content:start}
+.pw-side .p-head{grid-template-columns:minmax(0,1fr);gap:14px}
+.pw-side .avatar.lg{width:112px;height:112px;font-size:32px}
+.pw-side .dfacts{margin:20px 0 14px}
+.pw-side .sec{margin-top:22px;padding-top:18px}
+.pw-main{min-width:0;max-width:640px}
+.pw-main > .sec:first-child{border-top:0;margin-top:0;padding-top:4px}
+.drawer:not(.wide) .pw{display:block}
+@media (max-width:860px){
+  .drawer.wide{top:0;bottom:0;left:0;width:100%;border:0;border-radius:0;transform:translateY(24px);
+    padding-top:calc(env(safe-area-inset-top,0px) + 14px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);
+    padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+  .drawer.wide.open{transform:none}
+  .pw{grid-template-columns:minmax(0,1fr);gap:0}
+  .pw-side .p-head{grid-template-columns:84px minmax(0,1fr);gap:16px}
+  .pw-side .avatar.lg{width:84px;height:84px;font-size:24px}
+  .pw-main{max-width:none}
+  .pw-main > .sec:first-child{border-top:1px solid var(--line);margin-top:24px;padding-top:20px}
+}
 .d-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
 .d-top .eyebrow{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .p-head{display:grid;grid-template-columns:80px minmax(0,1fr);gap:18px;align-items:center}

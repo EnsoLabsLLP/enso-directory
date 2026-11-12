@@ -1,5 +1,6 @@
 import Script from "next/script";
 import Icon from "@/components/Icon";
+import SiteEnd from "@/components/SiteEnd";
 import icons from "@/lib/icons.json";
 import { listPractitioners } from "@/lib/store";
 import { toPublic, sortRecords } from "@/lib/practitioners";
@@ -143,18 +144,7 @@ export default async function DirectoryPage() {
         </section>
       </main>
 
-      <footer className="foot" id="foot">
-        <div className="wrap">
-          <p className="crisis">
-            <span className="ibox"><Icon name="phone" /></span>
-            <span>
-              Enso is not an emergency service. If you or someone you know is in immediate danger, call <strong>112</strong>.
-              For free mental health support at any hour, call Tele-MANAS on <strong>14416</strong>.
-            </span>
-          </p>
-          <p className="fine">© {new Date().getFullYear()} Enso Labs</p>
-        </div>
-      </footer>
+      <SiteEnd />
 
       <div className="scrim" id="scrim" />
       <aside className="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true" />

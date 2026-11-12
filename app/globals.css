@@ -229,12 +229,45 @@ textarea{resize:vertical;min-height:88px}
 .howlist .n{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:760px){.howlist{grid-template-columns:1fr}}
 
-/* Footer */
-.foot{border-top:1px solid var(--line)}
-.foot .wrap{display:grid;gap:14px;padding-block:28px 40px}
+/* "Start today" + footer, matching ensoai.in */
+.site-end{padding-top:24px;padding-bottom:max(48px,env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,var(--bg) 0%,#F1F3F9 28%,#C9D3EC 72%,#9DADD3 100%)}
+.start-card{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:center;min-height:380px;padding:clamp(36px,6vw,80px);border-radius:clamp(28px,4vw,44px);background:#1E2232;color:#fff;box-shadow:0 30px 80px rgba(22,31,58,.18)}
+.start-card.has-phones{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.start-copy{display:grid;gap:22px;justify-items:start;max-width:34rem}
+.start-copy h2{font-size:clamp(40px,6vw,76px);font-weight:800;letter-spacing:-.035em;line-height:1;color:#fff}
+.start-copy p{font-size:clamp(16px,1.6vw,20px);line-height:1.55;color:rgba(255,255,255,.78)}
+.start-art{align-self:end;margin-bottom:calc(-1 * clamp(36px,6vw,80px));display:flex;justify-content:center}
+.start-art img{display:block;width:100%;max-width:560px;height:auto}
+.store-badge{display:inline-block;border-radius:10px}
+.store-badge img{display:block;height:52px;width:auto}
+.store-badge.small img{height:46px}
+.store-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:12px;background:#000;color:#fff;border:1.5px solid rgba(255,255,255,.85);font-weight:600;font-size:16px;text-decoration:none}
+.store-btn.small{border-color:#000;font-size:15px;padding:11px 18px}
+.store-btn:hover{background:#111}
+.footer-cols .store-btn,.footer-cols .store-btn:hover{color:#fff;white-space:nowrap}
+@media (max-width:860px){.start-card.has-phones{grid-template-columns:minmax(0,1fr)}}
+
+.footer-card{position:relative;overflow:hidden;margin-top:clamp(64px,10vw,140px);padding:clamp(32px,5vw,64px) clamp(24px,5vw,64px) 0;border-radius:clamp(28px,4vw,44px);background:var(--bg);box-shadow:0 20px 60px rgba(22,31,58,.08)}
+.footer-top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.5fr);gap:40px}
+.footer-brand{display:grid;gap:22px;align-content:start;justify-items:start}
+.footer-logo{display:block;height:64px;width:auto}
+.footer-brand p{max-width:36ch;font-size:17px;color:var(--muted);line-height:1.6}
+.footer-social{display:flex;gap:12px}
+.footer-social a{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-2);color:#3B5BA9}
+.footer-social a:hover{border-color:var(--ink);color:var(--ink)}
+.footer-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;justify-self:end;width:100%;max-width:560px}
+.footer-cols h3{font-family:var(--font-body);font-size:16px;font-weight:600;margin-bottom:18px;color:var(--ink)}
+.footer-cols ul{display:grid;gap:14px}
+.footer-cols a{color:var(--muted);text-decoration:none;font-size:16px}
+.footer-cols a:hover{color:var(--ink)}
+.footer-app{display:grid;align-content:start;justify-items:start}
+.footer-card .crisis{margin-top:40px}
+.footer-bottom{margin-top:28px;padding-block:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.footer-mark{font-family:var(--font-display);font-weight:800;font-size:clamp(72px,15vw,200px);line-height:.8;letter-spacing:-.04em;color:rgba(22,31,58,.05);text-align:center;white-space:nowrap;margin-bottom:-.18em;user-select:none;pointer-events:none}
+@media (max-width:860px){.footer-top{grid-template-columns:minmax(0,1fr)}.footer-cols{justify-self:start}}
+@media (max-width:520px){.footer-cols{grid-template-columns:repeat(2,minmax(0,1fr))}.footer-app{grid-column:1 / -1}}
 .crisis{display:flex;gap:14px;align-items:flex-start;max-width:78ch;font-size:14px;color:var(--muted)}
 .crisis strong{color:var(--ink);user-select:all}
-.fine{font-size:13px;color:var(--muted)}
 
 /* Side sheet */
 .scrim{position:fixed;inset:0;background:var(--scrim);opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s linear .25s;z-index:20}

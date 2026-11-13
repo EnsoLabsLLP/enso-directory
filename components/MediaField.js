@@ -77,12 +77,12 @@ export default function MediaField({ kind, label, value, onChange, uploads, name
             kind === "photo" ? (
               <img src={value} alt="" />
             ) : embedded ? (
-              <a href={value} target="_blank" rel="noopener noreferrer" className="media-linked"><Icon name="play" size={22} /><span>{embedded}</span></a>
+              <a href={value} target="_blank" rel="noopener noreferrer" className="media-linked"><Icon name="player-play" size={22} /><span>{embedded}</span></a>
             ) : (
               <video src={value} controls preload="metadata" playsInline />
             )
           ) : (
-            <span className="media-none"><Icon name={kind === "photo" ? "image" : "film"} size={26} /></span>
+            <span className="media-none"><Icon name={kind === "photo" ? "photo" : "movie"} size={26} /></span>
           )}
         </div>
         <div className="media-controls">
@@ -92,7 +92,7 @@ export default function MediaField({ kind, label, value, onChange, uploads, name
               <Icon name="upload" />{busy ? (pct ? `Uploading ${pct}%` : "Uploading…") : value ? "Replace" : "Upload"}
             </button>
             {value && !busy && (
-              <button type="button" className="btn ghost sm" onClick={() => onChange("")}><Icon name="trash-2" />Remove</button>
+              <button type="button" className="btn ghost sm" onClick={() => onChange("")}><Icon name="trash" />Remove</button>
             )}
           </div>
           <label className="media-or">
@@ -109,7 +109,7 @@ export default function MediaField({ kind, label, value, onChange, uploads, name
               ? "A square, well-lit headshot works best. JPG, PNG or WebP, up to 10 MB."
               : "Upload an MP4 up to 300 MB, or paste a YouTube (Unlisted is fine), Google Drive or Vimeo link. Drive videos must be shared as 'Anyone with the link'."}
           </p>
-          {error && <p className="a-err" role="alert"><Icon name="circle-alert" />{error}</p>}
+          {error && <p className="a-err" role="alert"><Icon name="alert-circle" />{error}</p>}
         </div>
       </div>
     </div>

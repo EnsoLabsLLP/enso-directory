@@ -72,11 +72,16 @@ In **Settings → Domains**, add a domain such as `book.ensoai.in`. Vercel shows
 - **Add practitioner**: fill in the form and click **Save**. Required: name, title and a short summary.
 - **Photos**: upload a square headshot (JPG, PNG or WebP, up to 10 MB), or paste a link to one.
 - **Intro videos**: upload an MP4, MOV or WebM up to 300 MB, or paste a YouTube, Google Drive or Vimeo link. Long or large videos are better on YouTube as **Unlisted**. Google Drive videos must be shared as "Anyone with the link".
-- **Badges** show in green. "Creative therapies" is added automatically for art, drama, play, music, movement or expressive arts.
+- **Badges** show in green. "Creative therapies" is added automatically for any creative or expressive therapy.
+- **Can help with, I work with, Ways of working, Languages**: search and tick as many as apply. If something isn't listed, type it and press Enter to add it as written. On Ways of working, tap **+ in training** on any approach they're still training in.
 - **Hide** takes someone off the site without deleting them. **Delete** removes their row from the sheet.
 - **Position in the list** controls the order on the site (1 shows first).
 
 Changes show on the site straight away. Edits made directly in the Google Sheet show within about a minute.
+
+The option lists live in `data/taxonomy/` (concerns, client groups, approaches and languages). See the README in that folder for the format. In the sheet, list columns hold labels separated by `; `. Older values such as "Trauma" or "Teens" are recognised and tidied the next time a listing is saved. "Teens" and "Couples" move from **Can help with** to the **Works with** column.
+
+New columns are added to the right of the sheet automatically. Rows are written to match the sheet's own header row, so you can reorder columns or add your own.
 
 ## The Requests tab
 
@@ -90,6 +95,7 @@ Each request adds one row:
 | Name, Phone / WhatsApp, Email | How to reach them. Email is optional |
 | Preferred time | Mornings, Afternoons, Evenings, Weekends or Any time |
 | Wants help with, Language, Budget | From the Help me choose form |
+| Session for | Myself, Me and my partner, My child or teen, Me and my child, or My family |
 | Message | What they'd like to talk about, if they shared it |
 | Status | Starts as `New`. Change it in the sheet as you follow up, for example `Contacted`, `Confirmed` |
 | Request ID | The reference number the client sees |
@@ -128,10 +134,11 @@ components/                 Admin forms, media uploader, icons
 app/api/requests            Saves requests to the sheet
 app/api/admin/              Admin actions (signed-in only)
 app/api/upload              Upload tokens for Vercel Blob (signed-in only)
-lib/catalog.js              Concerns, approaches (with plain-language explanations), times, fee ranges
+data/taxonomy/              Option lists: concerns, client groups, approaches, languages (JSON)
+lib/catalog.js              Loads the option lists, plus times, fee ranges and lookups
 lib/seed.js                 The 10 starter listings
 lib/sheets.js               Google Sheets connection
 middleware.js               Keeps /admin behind the login
 ```
 
-Icons are from [Lucide](https://lucide.dev) (ISC licence), built into the site.
+Icons are from [Tabler Icons](https://tabler.io/icons) (MIT licence), built into the site in `lib/icons.json`. After adding an icon name to the code or the option lists, run `npm i --no-save @tabler/icons@3.39.0 && npm run icons`.

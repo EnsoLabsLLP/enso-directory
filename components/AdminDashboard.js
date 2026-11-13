@@ -83,7 +83,7 @@ export default function AdminDashboard({ initial }) {
     <main className="a-wrap a-main">
       {initial.storage === "local" && (
         <div className="a-banner">
-          <Icon name="circle-alert" />
+          <Icon name="alert-circle" />
           <div>
             <strong>Practice mode.</strong> Listings and requests are saved on this computer only. Add the Google Sheet settings to
             go live (see the README).
@@ -92,7 +92,7 @@ export default function AdminDashboard({ initial }) {
       )}
       {initial.error && (
         <div className="a-banner err">
-          <Icon name="circle-alert" />
+          <Icon name="alert-circle" />
           <div>{initial.error}</div>
         </div>
       )}
@@ -112,7 +112,7 @@ export default function AdminDashboard({ initial }) {
       )}
       {notice && (
         <p className={`a-notice ${notice.kind}`} role="status">
-          <Icon name={notice.kind === "ok" ? "circle-check" : "circle-alert"} />
+          <Icon name={notice.kind === "ok" ? "circle-check" : "alert-circle"} />
           {notice.text}
         </p>
       )}
@@ -135,7 +135,7 @@ export default function AdminDashboard({ initial }) {
 
         {people.length === 0 ? (
           <div className="a-empty">
-            <Icon name="users-round" size={28} />
+            <Icon name="users" size={28} />
             <p>No practitioners yet.</p>
             <Link className="btn sm" href="/admin/practitioners/new"><Icon name="plus" />Add the first one</Link>
           </div>
@@ -149,8 +149,8 @@ export default function AdminDashboard({ initial }) {
                   <span className="muted">{p.role}{p.place ? ` · ${p.place}` : ""}</span>
                   <span className="a-meta">
                     <span className={`a-pill ${p.status === "Hidden" ? "off" : "on"}`}>{p.status === "Hidden" ? "Hidden" : "Published"}</span>
-                    <span className={`a-media ${p.photo ? "has" : ""}`} title={p.photo ? "Photo added" : "No photo yet"}><Icon name="image" size={15} />{p.photo ? "Photo" : "No photo"}</span>
-                    <span className={`a-media ${p.video ? "has" : ""}`} title={p.video ? "Intro video added" : "No intro video yet"}><Icon name="film" size={15} />{p.video ? "Video" : "No video"}</span>
+                    <span className={`a-media ${p.photo ? "has" : ""}`} title={p.photo ? "Photo added" : "No photo yet"}><Icon name="photo" size={15} />{p.photo ? "Photo" : "No photo"}</span>
+                    <span className={`a-media ${p.video ? "has" : ""}`} title={p.video ? "Intro video added" : "No intro video yet"}><Icon name="movie" size={15} />{p.video ? "Video" : "No video"}</span>
                     <span className="a-media has">{fee(p.fee)}</span>
                   </span>
                 </div>
@@ -167,7 +167,7 @@ export default function AdminDashboard({ initial }) {
                       <button type="button" className="btn ghost sm" onClick={() => toggle(p)} disabled={busy === p.id}>
                         <Icon name={p.status === "Hidden" ? "eye" : "eye-off"} />{p.status === "Hidden" ? "Show" : "Hide"}
                       </button>
-                      <button type="button" className="iconbtn" onClick={() => setConfirming(p.id)} aria-label={`Delete ${p.name}`}><Icon name="trash-2" /></button>
+                      <button type="button" className="iconbtn" onClick={() => setConfirming(p.id)} aria-label={`Delete ${p.name}`}><Icon name="trash" /></button>
                     </>
                   )}
                 </div>
@@ -203,8 +203,9 @@ export default function AdminDashboard({ initial }) {
                     <td>{r.practitioner || "—"}</td>
                     <td>
                       {r.name}
-                      {(r.message || r.concerns) && (
+                      {(r.message || r.concerns || (r.forWhom && r.forWhom !== "Not said")) && (
                         <details className="a-msg"><summary>Details</summary>
+                          {r.forWhom && r.forWhom !== "Not said" && <p><strong>Session for:</strong> {r.forWhom}</p>}
                           {r.concerns && <p><strong>Wants help with:</strong> {r.concerns}</p>}
                           {r.language && <p><strong>Language:</strong> {r.language}</p>}
                           {r.budget && <p><strong>Budget:</strong> {r.budget}</p>}

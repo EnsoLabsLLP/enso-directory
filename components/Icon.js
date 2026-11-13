@@ -1,6 +1,6 @@
 import icons from "@/lib/icons.json";
 
-// Lucide icons (ISC licence), inlined so nothing loads from outside.
+// Tabler icons (MIT licence), inlined so nothing loads from outside. Rebuild with `npm run icons`.
 export default function Icon({ name, size = 18, className = "", strokeWidth = 1.75 }) {
   return (
     <svg

@@ -1,0 +1,41 @@
+{
+  "name": "I work with",
+  "description": "Who a practitioner works with: the session format, the age groups they see, and the life stages or communities they have experience with. Practitioners pick as many as apply.",
+  "version": 1,
+  "icons": "Tabler Icons v3 (outline), https://tabler.io/icons",
+  "categories": [
+    { "id": "format", "label": "Session format", "icon": "users", "hint": "Who is in the room" },
+    { "id": "age", "label": "Age group", "icon": "hourglass", "hint": "The ages they see" },
+    { "id": "life-stage", "label": "Life stage & community", "icon": "building-community", "hint": "Experience with particular groups" }
+  ],
+  "items": [
+    { "id": "individuals", "label": "Individuals", "category": "format", "icon": "user", "description": "One-to-one sessions.", "aliases": ["individual", "one on one", "one-to-one", "1:1", "individual therapy"] },
+    { "id": "couples", "label": "Couples", "category": "format", "icon": "friends", "description": "Two partners together, married or not.", "aliases": ["couple", "couples therapy", "couple therapy", "partners"] },
+    { "id": "families", "label": "Families", "category": "format", "icon": "home-heart", "description": "Two or more family members together.", "aliases": ["family", "family therapy"] },
+    { "id": "parent-child", "label": "Parent and child", "category": "format", "icon": "mood-kid", "description": "A parent or caregiver and their child in sessions together.", "aliases": ["parent child", "parent-child", "parent & child", "dyadic"] },
+    { "id": "groups", "label": "Groups", "category": "format", "icon": "users-group", "description": "Small therapy or support groups.", "aliases": ["group", "group therapy", "support groups"] },
+
+    { "id": "young-children", "label": "Young children", "category": "age", "icon": "horse-toy", "description": "Early years, usually with a parent involved.", "ages": "3–5", "aliases": ["toddlers", "preschoolers", "early childhood"] },
+    { "id": "children", "label": "Children", "category": "age", "icon": "backpack", "description": "Primary and middle school age.", "ages": "6–12", "aliases": ["child", "kids"] },
+    { "id": "adolescents", "label": "Adolescents", "category": "age", "icon": "device-mobile", "description": "Teenagers in secondary and higher secondary school.", "ages": "13–17", "aliases": ["teens", "teen", "teenagers", "adolescent"] },
+    { "id": "young-adults", "label": "Young adults", "category": "age", "icon": "school", "description": "College years and early working life.", "ages": "18–25", "aliases": ["young adult", "college students"] },
+    { "id": "adults", "label": "Adults", "category": "age", "icon": "user-check", "description": "Working age and mid-life.", "ages": "26–59", "aliases": ["adult"] },
+    { "id": "older-adults", "label": "Older adults", "category": "age", "icon": "old", "description": "Later life and retirement.", "ages": "60+", "aliases": ["elderly", "seniors", "senior citizens", "geriatric"] },
+
+    { "id": "premarital", "label": "Premarital couples", "category": "life-stage", "icon": "calendar-heart", "description": "Couples who are engaged or thinking about marriage.", "aliases": ["premarital", "pre-marital", "engaged couples", "premarital counselling"] },
+    { "id": "expecting-parents", "label": "Expecting parents", "category": "life-stage", "icon": "baby-carriage", "description": "People who are pregnant, and their partners.", "aliases": ["pregnancy", "pregnant women", "pregnant", "expectant parents", "antenatal"] },
+    { "id": "new-mothers", "label": "New mothers", "category": "life-stage", "icon": "baby-bottle", "description": "Mothers in the first year or so after birth.", "aliases": ["postpartum mothers", "new moms", "new mums"] },
+    { "id": "mothers", "label": "Mothers", "category": "life-stage", "icon": "heart-handshake", "description": "Mums at any stage of motherhood.", "aliases": ["mother", "moms", "mums"] },
+    { "id": "fathers", "label": "Fathers", "category": "life-stage", "icon": "user-shield", "description": "Dads at any stage of fatherhood.", "aliases": ["father", "dads"] },
+    { "id": "parents", "label": "Parents", "category": "life-stage", "icon": "users-plus", "description": "Parents looking for support in raising their children.", "aliases": ["parent"] },
+    { "id": "students", "label": "Students", "category": "life-stage", "icon": "book", "description": "School and college students.", "aliases": ["student"] },
+    { "id": "professionals", "label": "Working professionals", "category": "life-stage", "icon": "briefcase", "description": "People balancing work pressure with the rest of life.", "aliases": ["professionals", "corporate employees", "working adults"] },
+    { "id": "caregivers", "label": "Caregivers", "category": "life-stage", "icon": "heart-plus", "description": "People looking after an ill, ageing or disabled family member.", "aliases": ["caregiver", "carers"] },
+    { "id": "lgbtqia", "label": "LGBTQIA+ people", "category": "life-stage", "icon": "rainbow", "description": "Queer-affirmative support for LGBTQIA+ people and their families.", "aliases": ["lgbtq", "lgbtqia", "lgbtqia+", "queer"] },
+    { "id": "neurodivergent", "label": "Neurodivergent people", "category": "life-stage", "icon": "puzzle", "description": "Autistic people, people with ADHD and other neurodivergent people.", "aliases": ["neurodivergent", "neurodiverse"] },
+    { "id": "disabilities", "label": "People with disabilities", "category": "life-stage", "icon": "wheelchair", "description": "Disabled people and those with long-term health conditions.", "aliases": ["disability", "disabled", "differently abled", "pwd"] },
+    { "id": "nri", "label": "NRIs & expats", "category": "life-stage", "icon": "world", "description": "Indians living abroad, and people who have moved to India.", "aliases": ["nri", "nris", "expats", "expat", "indians abroad"] },
+    { "id": "women", "label": "Women", "category": "life-stage", "icon": "gender-female", "description": "Concerns that come with being a woman, at home, at work and in society.", "aliases": ["woman"] },
+    { "id": "men", "label": "Men", "category": "life-stage", "icon": "gender-male", "description": "A space for men to talk about what they usually keep to themselves.", "aliases": ["man"] }
+  ]
+}

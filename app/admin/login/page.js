@@ -52,7 +52,7 @@ export default function LoginPage() {
             </button>
           </div>
         </div>
-        {error && <p className="a-err" role="alert"><Icon name="circle-alert" />{error}</p>}
+        {error && <p className="a-err" role="alert"><Icon name="alert-circle" />{error}</p>}
         <button className="btn block" type="submit" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
       </form>
     </main>

@@ -19,7 +19,7 @@ export default function AdminHeader() {
         </Link>
         <nav className="a-nav">
           <a href="/" target="_blank" rel="noopener noreferrer" className="btn ghost sm"><Icon name="external-link" />View site</a>
-          <button type="button" className="btn ghost sm" onClick={logout}><Icon name="log-out" />Log out</button>
+          <button type="button" className="btn ghost sm" onClick={logout}><Icon name="logout" />Log out</button>
         </nav>
       </div>
     </header>

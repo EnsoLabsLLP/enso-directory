@@ -35,7 +35,7 @@ export default async function DirectoryPage() {
             <a className="nav-link" href="#results">Therapists</a>
             <a className="nav-link" href="#how">How it works</a>
             <a className="nav-cta" href="#help-me-choose">
-              <Icon name="user-round-search" />
+              <Icon name="user-search" />
               Help me choose
             </a>
           </div>
@@ -61,7 +61,7 @@ export default async function DirectoryPage() {
           </form>
           <ul className="trust">
             <li>
-              <span className="ibox green"><Icon name="badge-check" /></span>
+              <span className="ibox green"><Icon name="rosette-discount-check" /></span>
               <span><strong>Verified psychologists</strong><span className="t">Masters and MPhil qualified</span></span>
             </li>
             <li>
@@ -77,8 +77,9 @@ export default async function DirectoryPage() {
             <p>Pick one or more. The list below updates as you go.</p>
           </div>
           <div className="tiles" id="tiles" />
+          <div className="cbrowse" id="cbrowse" hidden />
           <div className="tiles-foot">
-            <button type="button" className="tiles-more" id="tilesMore" aria-expanded="false" aria-controls="tiles" hidden>
+            <button type="button" className="tiles-more" id="tilesMore" aria-expanded="false" aria-controls="tiles cbrowse" hidden>
               Show all concerns
             </button>
             <p className="tiles-note">
@@ -91,7 +92,7 @@ export default async function DirectoryPage() {
           <div className="side">
             <details className="filters" id="filters">
               <summary>
-                <Icon name="sliders-horizontal" />
+                <Icon name="adjustments-horizontal" />
                 Filters <span className="fcount" id="fcount" hidden />
                 <Icon name="chevron-down" className="chev" />
               </summary>
@@ -137,7 +138,7 @@ export default async function DirectoryPage() {
               <p>Use the filters or browse profiles to find someone who works with what you're going through.</p>
             </li>
             <li>
-              <span className="ibox"><Icon name="message-circle-heart" /></span>
+              <span className="ibox"><Icon name="message-heart" /></span>
               <span className="n">Step 2</span>
               <h3>Send a request</h3>
               <p>Pick a time that suits you and leave a number we can reach you on.</p>

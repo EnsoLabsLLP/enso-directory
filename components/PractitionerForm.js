@@ -4,26 +4,27 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Icon from "./Icon";
 import MediaField from "./MediaField";
-import { CONCERNS, WAYS, TIMES, EXPERIENCE, BADGE_PRESETS, findTime } from "@/lib/catalog";
+import MultiSelect from "./MultiSelect";
+import {
+  CONCERNS, CONCERN_GROUPS, CLIENTS, CLIENT_GROUPS, WAYS, WAY_GROUPS, LANGUAGES, FEATURED_LANGUAGES,
+  TIMES, EXPERIENCE, BADGE_PRESETS, findTime
+} from "@/lib/catalog";
 
-const LANGUAGE_SUGGESTIONS = ["English", "Hindi", "Marathi", "Gujarati", "Bengali", "Tamil", "Telugu", "Kannada", "Malayalam", "Punjabi", "Urdu"];
 const splitText = (s) => String(s || "").split(/[;\n]/).map((x) => x.trim()).filter(Boolean);
-const splitLangs = (s) => String(s || "").split(/[;,]/).map((x) => x.trim()).filter(Boolean);
 
-function partition(values, known) {
-  const set = new Set(known);
-  return { picked: values.filter((v) => set.has(v)), other: values.filter((v) => !set.has(v)).join("; ") };
-}
+const CONCERN_OPTIONS = CONCERNS.map((c) => ({ value: c.label, label: c.label, group: c.category, icon: c.icon, description: c.description, keys: [c.id, ...c.aliases] }));
+const CLIENT_OPTIONS = CLIENTS.map((c) => ({ value: c.label, label: c.label, group: c.category, icon: c.icon, description: c.description, meta: c.ages ? `Ages ${c.ages}` : "", keys: [c.id, ...c.aliases] }));
+const WAY_OPTIONS = WAYS.map((w) => ({ value: w.short, chip: w.short, label: w.name, group: w.category, icon: w.icon, description: w.description, keys: [w.id, w.short, ...w.aliases] }));
+const LANGUAGE_GROUPS = [{ id: "common", label: "Most used" }, { id: "more", label: "More languages" }];
+const LANGUAGE_OPTIONS = LANGUAGES.map((l) => ({
+  value: l.label, label: l.label, meta: l.native !== l.label ? l.native : "", group: FEATURED_LANGUAGES.includes(l.label) ? "common" : "more", keys: [l.id, ...l.aliases]
+}));
+const BADGE_OPTIONS = BADGE_PRESETS.map((b) => ({ value: b, label: b, icon: /advis/i.test(b) ? "user-star" : "rosette-discount-check" }));
 
 export default function PractitionerForm({ initial, uploads }) {
   const router = useRouter();
   const isNew = !initial;
   const r = initial || {};
-  const concernLabels = CONCERNS.map((c) => c.label);
-  const wayLabels = WAYS.map((w) => w.short);
-  const c0 = partition(r.concerns || [], concernLabels);
-  const w0 = partition(r.ways || [], wayLabels);
-  const b0 = partition(r.badges || [], BADGE_PRESETS);
 
   const [f, setF] = useState({
     name: r.name || "",
@@ -35,13 +36,11 @@ export default function PractitionerForm({ initial, uploads }) {
     video: r.video || "",
     summary: r.summary || "",
     about: r.about || "",
-    badges: b0.picked,
-    otherBadges: b0.other,
-    concerns: c0.picked,
-    otherConcerns: c0.other,
-    ways: w0.picked,
-    otherWays: w0.other,
-    languages: (r.languages || []).join(", "),
+    badges: r.badges || [],
+    concerns: r.concerns || [],
+    clients: r.clients || [],
+    ways: r.ways || [],
+    languages: r.languages || [],
     avail: (r.avail || []).map((l) => findTime(l)?.label).filter(Boolean),
     availNote: r.availNote || "",
     fee: r.fee == null ? "" : String(r.fee),
@@ -54,10 +53,7 @@ export default function PractitionerForm({ initial, uploads }) {
 
   const set = (key) => (e) => setF((s) => ({ ...s, [key]: e && e.target ? e.target.value : e }));
   const toggle = (key, value) => setF((s) => ({ ...s, [key]: s[key].includes(value) ? s[key].filter((x) => x !== value) : [...s[key], value] }));
-  const addLang = (l) => {
-    const now = splitLangs(f.languages);
-    if (!now.some((x) => x.toLowerCase() === l.toLowerCase())) setF((s) => ({ ...s, languages: [...now, l].join(", ") }));
-  };
+  const setList = (key) => (list) => setF((s) => ({ ...s, [key]: list }));
 
   async function save(e) {
     e.preventDefault();
@@ -73,10 +69,11 @@ export default function PractitionerForm({ initial, uploads }) {
       video: f.video,
       summary: f.summary.trim(),
       about: f.about.trim(),
-      badges: [...f.badges, ...splitText(f.otherBadges)],
-      concerns: [...CONCERNS.map((c) => c.label).filter((l) => f.concerns.includes(l)), ...splitText(f.otherConcerns)],
-      ways: [...WAYS.map((w) => w.short).filter((l) => f.ways.includes(l)), ...splitText(f.otherWays)],
-      languages: splitLangs(f.languages),
+      badges: f.badges,
+      concerns: f.concerns,
+      clients: f.clients,
+      ways: f.ways,
+      languages: f.languages,
       avail: TIMES.map((t) => t.label).filter((l) => f.avail.includes(l)),
       availNote: f.availNote.trim(),
       fee: f.fee,
@@ -132,7 +129,7 @@ export default function PractitionerForm({ initial, uploads }) {
             <button className="btn sm" type="submit" disabled={busy}><Icon name="check" />{busy ? "Saving…" : "Save"}</button>
           </div>
         </div>
-        {error && <p className="a-notice err" role="alert"><Icon name="circle-alert" />{error}</p>}
+        {error && <p className="a-notice err" role="alert"><Icon name="alert-circle" />{error}</p>}
 
         <fieldset className="pf-card">
           <legend>Basics</legend>
@@ -175,36 +172,29 @@ export default function PractitionerForm({ initial, uploads }) {
 
         <fieldset className="pf-card">
           <legend>Badges</legend>
-          <p className="hint">Badges show in green on the listing. Only add credentials you've checked.</p>
-          <div className="pf-checks">
-            {BADGE_PRESETS.map((b) => (
-              <label key={b} className="pf-check"><input type="checkbox" checked={f.badges.includes(b)} onChange={() => toggle("badges", b)} />{b}</label>
-            ))}
+          <div className="field">
+            <label htmlFor="badges" className="sr">Badges</label>
+            <p className="hint" id="badgesHint">Badges show in green on the listing. Only add credentials you've checked. &quot;Creative therapies&quot; is added on its own when they offer a creative or expressive therapy.</p>
+            <MultiSelect id="badges" describedBy="badgesHint" options={BADGE_OPTIONS} value={f.badges} onChange={setList("badges")} placeholder="Pick a badge or type your own" />
           </div>
-          <div className="field"><label htmlFor="otherBadges">Other badges</label><input id="otherBadges" type="text" value={f.otherBadges} onChange={set("otherBadges")} placeholder="Separate with semicolons" /></div>
-          <p className="hint">"Creative therapies" is added automatically when they offer art, drama, play, music, movement or expressive arts.</p>
         </fieldset>
 
         <fieldset className="pf-card">
-          <legend>Can help with</legend>
-          <div className="pf-checks">
-            {CONCERNS.map((c) => (
-              <label key={c.id} className="pf-check"><input type="checkbox" checked={f.concerns.includes(c.label)} onChange={() => toggle("concerns", c.label)} /><Icon name={c.icon} size={16} />{c.label}</label>
-            ))}
-          </div>
-          <div className="field"><label htmlFor="otherConcerns">Other areas</label><input id="otherConcerns" type="text" value={f.otherConcerns} onChange={set("otherConcerns")} placeholder="For example: OCD; Postpartum support" /></div>
-        </fieldset>
-
-        <fieldset className="pf-card">
-          <legend>Ways of working</legend>
-          <div className="pf-checks">
-            {WAYS.map((w) => (
-              <label key={w.id} className="pf-check" title={w.name}><input type="checkbox" checked={f.ways.includes(w.short)} onChange={() => toggle("ways", w.short)} />{w.short}</label>
-            ))}
+          <legend>Expertise</legend>
+          <div className="field">
+            <label htmlFor="concerns">Can help with</label>
+            <p className="hint" id="concernsHint">Concerns and conditions they work with. Search, or type something that isn&apos;t listed.</p>
+            <MultiSelect id="concerns" describedBy="concernsHint" options={CONCERN_OPTIONS} groups={CONCERN_GROUPS} value={f.concerns} onChange={setList("concerns")} placeholder="Search concerns, e.g. anxiety, OCD, grief" />
           </div>
           <div className="field">
-            <label htmlFor="otherWays">Other approaches</label>
-            <input id="otherWays" type="text" value={f.otherWays} onChange={set("otherWays")} placeholder="Separate with semicolons. Add '(in training)' after an approach they're still training in." />
+            <label htmlFor="clients">I work with</label>
+            <p className="hint" id="clientsHint">Who they see: session format, age groups and the communities they have experience with.</p>
+            <MultiSelect id="clients" describedBy="clientsHint" options={CLIENT_OPTIONS} groups={CLIENT_GROUPS} value={f.clients} onChange={setList("clients")} placeholder="Search, e.g. couples, adolescents, new mothers" />
+          </div>
+          <div className="field">
+            <label htmlFor="ways">Ways of working</label>
+            <p className="hint" id="waysHint">Approaches they use. Tap &quot;+ in training&quot; on any they&apos;re still training in.</p>
+            <MultiSelect id="ways" describedBy="waysHint" options={WAY_OPTIONS} groups={WAY_GROUPS} value={f.ways} onChange={setList("ways")} training placeholder="Search approaches, e.g. CBT, EMDR, art therapy" />
           </div>
         </fieldset>
 
@@ -212,12 +202,7 @@ export default function PractitionerForm({ initial, uploads }) {
           <legend>Languages and availability</legend>
           <div className="field">
             <label htmlFor="languages">Languages</label>
-            <input id="languages" type="text" value={f.languages} onChange={set("languages")} placeholder="English, Hindi" />
-            <div className="pf-suggest">
-              {LANGUAGE_SUGGESTIONS.filter((l) => !splitLangs(f.languages).some((x) => x.toLowerCase() === l.toLowerCase())).map((l) => (
-                <button type="button" key={l} className="fchip" onClick={() => addLang(l)}><Icon name="plus" size={14} />{l}</button>
-              ))}
-            </div>
+            <MultiSelect id="languages" options={LANGUAGE_OPTIONS} groups={LANGUAGE_GROUPS} value={f.languages} onChange={setList("languages")} placeholder="Search languages" />
           </div>
           <div className="field">
             <span className="label">Usually available</span>
@@ -247,7 +232,7 @@ export default function PractitionerForm({ initial, uploads }) {
                 <button type="button" className="btn ghost sm" onClick={() => setConfirmDelete(false)}>Cancel</button>
               </span>
             ) : (
-              <button type="button" className="btn ghost sm" onClick={() => setConfirmDelete(true)}><Icon name="trash-2" />Delete practitioner</button>
+              <button type="button" className="btn ghost sm" onClick={() => setConfirmDelete(true)}><Icon name="trash" />Delete practitioner</button>
             )
           )}
           <span className="pf-spacer" />

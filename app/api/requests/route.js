@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { appendRequest, listPractitioners } from "@/lib/store";
 import { istNow } from "@/lib/requests";
-import { CONCERNS, FEES } from "@/lib/catalog";
+import { CONCERNS, FOR_WHOM, FEES } from "@/lib/catalog";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,7 +47,8 @@ export async function POST(request) {
     line(b.otherConcern, 120)
   ]
     .filter(Boolean)
-    .join(", ");
+    .join("; ");
+  const forWhom = FOR_WHOM.find((f) => f.id === b.forWhom)?.label || "";
 
   const record = {
     received: istNow(),
@@ -58,6 +59,7 @@ export async function POST(request) {
     email,
     time: line(b.time, 40) || "Any time",
     concerns,
+    forWhom: forWhom || "Not said",
     language: line(b.language, 40) || (isMatch ? "Any" : ""),
     budget: FEES.find((f) => f.id === b.budget)?.label || (isMatch ? "Any" : ""),
     message: String(b.message ?? "").trim().slice(0, 1500),

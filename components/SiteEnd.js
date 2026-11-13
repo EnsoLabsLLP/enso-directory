@@ -26,7 +26,7 @@ function AppStoreLink({ className = "" }) {
   }
   return (
     <a className={`store-btn ${className}`} href={href} target="_blank" rel="noopener noreferrer">
-      <Icon name="smartphone" />
+      <Icon name="device-mobile" />
       Download the app
     </a>
   );
@@ -69,7 +69,7 @@ export default function SiteEnd() {
               {(SITE.linkedinUrl || SITE.email) && (
                 <div className="footer-social">
                   {SITE.linkedinUrl && (
-                    <a href={SITE.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="Enso Labs on LinkedIn"><Icon name="linkedin" /></a>
+                    <a href={SITE.linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="Enso Labs on LinkedIn"><Icon name="brand-linkedin" /></a>
                   )}
                   {SITE.email && (
                     <a href={`mailto:${SITE.email}`} aria-label={`Email ${SITE.email}`}><Icon name="mail" /></a>
